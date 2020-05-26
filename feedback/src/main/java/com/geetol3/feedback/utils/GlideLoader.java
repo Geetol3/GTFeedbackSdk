@@ -14,46 +14,26 @@ import com.zhihu.matisse.engine.ImageEngine;
 public class GlideLoader implements ImageEngine {
     @Override
     public void loadThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri) {
-        try {
-            Glide.with(context).asBitmap().load(uri).into(imageView);
-        } catch (Exception e) {
-            Glide.with(context).load(uri).asBitmap().into(imageView);
-            e.printStackTrace();
-        }
+        Glide.with(context).load(uri).into(imageView);
     }
 
     @Override
     public void loadGifThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri) {
-        try {
-            Glide.with(context).asGif().load(uri).into(imageView);
-        } catch (Exception e) {
-            Glide.with(context).load(uri).asGif().into(imageView);
-            e.printStackTrace();
-        }
+        Glide.with(context).load(uri).into(imageView);
     }
 
     @Override
     public void loadImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri) {
-        try {
-            Glide.with(context).asBitmap().load(uri).into(imageView);
-        } catch (Exception e) {
-            Glide.with(context).load(uri).asBitmap().into(imageView);
-            e.printStackTrace();
-        }
+        Glide.with(context).load(uri).into(imageView);
     }
 
     @Override
     public void loadGifImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri) {
-        try {
-            Glide.with(context).asGif().load(uri).into(imageView);
-        } catch (Exception e) {
-            Glide.with(context).load(uri).asGif().into(imageView);
-            e.printStackTrace();
-        }
+        Glide.with(context).load(uri).into(imageView);
     }
 
     @Override
     public boolean supportAnimatedGif() {
-        return true;
+        return false;
     }
 }
