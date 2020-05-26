@@ -16,5 +16,22 @@
         android:allowBackup="false"
         android:persistent="true"
         android:supportsRtl="true">
+        <!-- 反馈开始 -->
+        <activity android:name=".activities.GTSuggestListActivity"
+            android:screenOrientation="portrait"
+            android:label="反馈列表"/>
+        <activity android:name=".activities.GTSuggestAddActivity"
+            android:screenOrientation="portrait"
+            android:label="添加反馈"/>
+        <activity android:name=".activities.GTSuggestDetailActivity"
+            android:screenOrientation="portrait"
+            android:label="反馈详情"/>
+        <activity android:name=".activities.GTImageShowActivity"
+            android:screenOrientation="portrait"
+            android:label="图片展示"/>
+        <activity android:name=".activities.GTSuggestReplyActivity"
+            android:screenOrientation="portrait"
+            android:label="反馈回复"/>
+        <!-- 反馈结束 -->
     </application>
 </manifest>

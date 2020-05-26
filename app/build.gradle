@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.geetol.feedbacksdk"
+        applicationId "com.geetol3.feedback"
         minSdkVersion 17
         targetSdkVersion 26
         versionCode 1
