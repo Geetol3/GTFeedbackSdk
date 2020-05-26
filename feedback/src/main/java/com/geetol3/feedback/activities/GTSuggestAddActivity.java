@@ -27,6 +27,7 @@ import com.gtdev5.geetolsdk.mylibrary.base.BaseGTActivity;
 import com.gtdev5.geetolsdk.mylibrary.beans.AliOssBean;
 import com.gtdev5.geetolsdk.mylibrary.beans.ResultBean;
 import com.gtdev5.geetolsdk.mylibrary.callback.BaseCallback;
+import com.gtdev5.geetolsdk.mylibrary.util.LogUtils;
 import com.gtdev5.geetolsdk.mylibrary.util.MD5Tools;
 import com.gtdev5.geetolsdk.mylibrary.util.PermissionUtils;
 import com.gtdev5.geetolsdk.mylibrary.util.ToastUtils;
@@ -128,6 +129,7 @@ public class GTSuggestAddActivity extends BaseGTActivity {
         if (mPicInfos.size() > 0) {
             AliOssBean aliOssBean = Utils.getAliOssParam();
             if (aliOssBean != null) {
+                LogUtils.e("请求", "图片数量：" + mPicInfos.size());
                 AliOssBatchPicUtils.getInstance(this).uploadBatchFile(aliOssBean.getBucketName(),
                         mPicInfos, (success, failure) -> {
                     if (success != null && success.size() > 0) {

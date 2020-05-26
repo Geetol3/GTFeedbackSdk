@@ -24,7 +24,7 @@ public class HttpHelper {
     /**
      * 添加服务单回复
      */
-    private static String ADD_REPLY = "sup.add_reply";
+    private static String ADD_REPLY = "sup.add_reply_oss";
     /**
      * 结束服务单
      */
