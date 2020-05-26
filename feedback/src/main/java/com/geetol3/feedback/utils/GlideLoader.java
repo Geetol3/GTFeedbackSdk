@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.gtdev5.geetolsdk.mylibrary.util.ImageLoader;
 import com.zhihu.matisse.engine.ImageEngine;
 
 /**
@@ -14,22 +15,22 @@ import com.zhihu.matisse.engine.ImageEngine;
 public class GlideLoader implements ImageEngine {
     @Override
     public void loadThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri) {
-        Glide.with(context).load(uri).into(imageView);
+        Glide.with(context).asBitmap().load(uri).into(imageView);
     }
 
     @Override
     public void loadGifThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri) {
-        Glide.with(context).load(uri).into(imageView);
+        Glide.with(context).asGif().load(uri).into(imageView);
     }
 
     @Override
     public void loadImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri) {
-        Glide.with(context).load(uri).into(imageView);
+        Glide.with(context).asBitmap().load(uri).into(imageView);
     }
 
     @Override
     public void loadGifImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri) {
-        Glide.with(context).load(uri).into(imageView);
+        Glide.with(context).asGif().load(uri).into(imageView);
     }
 
     @Override

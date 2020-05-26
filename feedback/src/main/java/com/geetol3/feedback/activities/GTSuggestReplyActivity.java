@@ -121,7 +121,7 @@ public class GTSuggestReplyActivity extends BaseGTActivity {
                         });
             }
         } else {
-            addReplyData(content, null);
+            addReplyData(content, "");
         }
     }
 

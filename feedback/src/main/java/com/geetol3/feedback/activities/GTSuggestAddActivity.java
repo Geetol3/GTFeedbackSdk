@@ -141,7 +141,7 @@ public class GTSuggestAddActivity extends BaseGTActivity {
                 });
             }
         } else {
-            addSuggestData(title, content, null);
+            addSuggestData(title, content, "");
         }
     }
 
