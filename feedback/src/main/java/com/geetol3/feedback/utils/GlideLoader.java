@@ -34,6 +34,6 @@ public class GlideLoader implements ImageEngine {
 
     @Override
     public boolean supportAnimatedGif() {
-        return false;
+        return true;
     }
 }
