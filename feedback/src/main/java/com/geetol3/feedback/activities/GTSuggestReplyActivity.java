@@ -1,9 +1,6 @@
 package com.geetol3.feedback.activities;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,22 +15,23 @@ import com.geetol3.feedback.adapters.GTImageAddAdapter;
 import com.geetol3.feedback.beans.PicInfo;
 import com.geetol3.feedback.http.HttpHelper;
 import com.geetol3.feedback.utils.AliOssBatchPicUtils;
-import com.geetol3.feedback.utils.GTMatisseUtil;
 import com.geetol3.feedback.utils.GTUtils;
-import com.geetol3.feedback.utils.Uri2PathUtil;
 import com.gtdev5.geetolsdk.mylibrary.base.BaseGTActivity;
 import com.gtdev5.geetolsdk.mylibrary.beans.AliOssBean;
 import com.gtdev5.geetolsdk.mylibrary.beans.ResultBean;
 import com.gtdev5.geetolsdk.mylibrary.callback.BaseCallback;
 import com.gtdev5.geetolsdk.mylibrary.util.MD5Tools;
-import com.gtdev5.geetolsdk.mylibrary.util.PermissionUtils;
 import com.gtdev5.geetolsdk.mylibrary.util.ToastUtils;
 import com.gtdev5.geetolsdk.mylibrary.util.Utils;
-import com.zhihu.matisse.Matisse;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.finalteam.rxgalleryfinal.RxGalleryFinal;
+import cn.finalteam.rxgalleryfinal.bean.MediaBean;
+import cn.finalteam.rxgalleryfinal.imageloader.ImageLoaderType;
+import cn.finalteam.rxgalleryfinal.rxbus.RxBusResultDisposable;
+import cn.finalteam.rxgalleryfinal.rxbus.event.ImageMultipleResultEvent;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -46,7 +44,7 @@ public class GTSuggestReplyActivity extends BaseGTActivity {
     private RecyclerView mPicRecyclerView;
     private GTImageAddAdapter mImageAddAdapter;
     private ProgressBar mProgressBar;
-    private int mCurrentPosition, mServiceId;
+    private int mServiceId;
 
     private List<PicInfo> mPicInfos = new ArrayList<>();
 
@@ -82,13 +80,12 @@ public class GTSuggestReplyActivity extends BaseGTActivity {
         mImageAddAdapter = new GTImageAddAdapter(this, 3, null, new GTImageAddAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(int position) {
-                mCurrentPosition = position;
-                GTMatisseUtil.getPhoto(GTSuggestReplyActivity.this, 1, 1113, 115);
+                choosePic(1);
             }
 
             @Override
             public void OnAddItemClick(int count) {
-                GTMatisseUtil.getPhoto(GTSuggestReplyActivity.this, count, 1113, 114);
+                choosePic(count);
             }
         });
         mPicRecyclerView.setAdapter(mImageAddAdapter);
@@ -163,72 +160,40 @@ public class GTSuggestReplyActivity extends BaseGTActivity {
                 });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && data != null) {
-            switch (requestCode) {
-                case 114:
-                    List<Uri> list2 = Matisse.obtainResult(data);
-                    if (null != list2 && list2.size() > 0) {
-                        List<String> strings = new ArrayList<>();
-                        for (Uri uri : list2) {
-                            strings.add(uri.toString());
-                            try {
-                                String path = Uri2PathUtil.getRealPathFromUri(this, uri);
-                                String name = GTUtils.getPicName(path);
-                                name = MD5Tools.MD5(name) + ".jpg";
-                                PicInfo picInfo = new PicInfo(name, path);
-                                mPicInfos.add(picInfo);
-                            } catch (Exception e) {
-                                e.printStackTrace();
+    /**
+     * 选择图片
+     */
+    private void choosePic(int count) {
+        RxGalleryFinal rxGalleryFinal = RxGalleryFinal.with(this).image().multiple();
+        rxGalleryFinal.maxSize(count)
+                .imageLoader(ImageLoaderType.GLIDE)
+                .subscribe(new RxBusResultDisposable<ImageMultipleResultEvent>() {
+                    @Override
+                    protected void onEvent(ImageMultipleResultEvent imageMultipleResultEvent) throws Exception {
+                        List<MediaBean> list = imageMultipleResultEvent.getResult();
+                        if (list != null && list.size() > 0) {
+                            List<String> strings = new ArrayList<>();
+                            for (MediaBean mediaBean : list) {
+                                strings.add(mediaBean.getOriginalPath());
+                                try {
+                                    String path = mediaBean.getOriginalPath();
+                                    String name = GTUtils.getPicName(path);
+                                    name = MD5Tools.MD5(name) + ".jpg";
+                                    PicInfo picInfo = new PicInfo(name, path);
+                                    mPicInfos.add(picInfo);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
+                            mImageAddAdapter.AddDatas(strings);
                         }
-                        mImageAddAdapter.AddDatas(strings);
                     }
-                    break;
-                case 115:
-                    List<Uri> list3 = Matisse.obtainResult(data);
-                    if (null != list3 && list3.size() > 0) {
-                        try {
-                            String path = Uri2PathUtil.getRealPathFromUri(this, list3.get(0));
-                            String name = GTUtils.getPicName(path);
-                            name = MD5Tools.MD5(name) + ".jpg";
-                            PicInfo picInfo = new PicInfo(name, path);
-                            mPicInfos.set(mCurrentPosition, picInfo);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        mImageAddAdapter.repeleceData(list3.get(0).toString(), mCurrentPosition);
+
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
                     }
-                    break;
-            }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1113)
-            PermissionUtils.onRequestMorePermissionsResult(this, GTMatisseUtil.PICTURE_PERMISSION,
-                    new PermissionUtils.PermissionCheckCallBack() {
-                @Override
-                public void onHasPermission() {
-                    ToastUtils.showShortToast("授权成功");
-                }
-
-                @Override
-                public void onUserHasAlreadyTurnedDown(String... strings) {
-                    ToastUtils.showShortToast("授予此权限才能添加照片哦,点击确定继续授权。");
-                    PermissionUtils.requestMorePermissions(GTSuggestReplyActivity.this,
-                            GTMatisseUtil.PICTURE_PERMISSION, 1113);
-                }
-
-                @Override
-                public void onUserHasAlreadyTurnedDownAndDontAsk(String... strings) {
-                    ToastUtils.showShortToast("您已经拒绝授权，无法继续添加照片，点击确定进入设置开启授权");
-                    PermissionUtils.toAppSetting(GTSuggestReplyActivity.this);
-                }
-            });
+                })
+                .openGallery();
     }
 }

@@ -33,5 +33,13 @@
             android:screenOrientation="portrait"
             android:label="反馈回复"/>
         <!-- 反馈结束 -->
+        <!-- 图片选择器 -->
+        <activity
+            android:name="cn.finalteam.rxgalleryfinal.ui.activity.MediaActivity"
+            android:screenOrientation="portrait"
+            android:exported="true"/>
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"/>
     </application>
 </manifest>

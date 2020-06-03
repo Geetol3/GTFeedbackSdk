@@ -1,7 +1,6 @@
 package com.geetol3.feedback.adapters;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,9 +50,9 @@ public class GTImageAddAdapter extends RecyclerView.Adapter<GTImageAddAdapter.My
             });
         } else {
             try {
-                Glide.with(context).load(Uri.parse(datas.get(position))).into(holder.iv_pic);
+                Glide.with(context).load(datas.get(position)).into(holder.iv_pic);
             } catch (Exception e) {
-                Glide.with(context).load(Uri.parse(datas.get(position))).into(holder.iv_pic);
+                Glide.with(context).load(datas.get(position)).into(holder.iv_pic);
             }
             holder.iv_pic.setOnClickListener(v -> {
                 listener.OnItemClick(position);
