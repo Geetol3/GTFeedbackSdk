@@ -166,7 +166,7 @@ public class GTSuggestReplyActivity extends BaseGTActivity {
     private void choosePic(int count) {
         RxGalleryFinal rxGalleryFinal = RxGalleryFinal.with(this).image().multiple();
         rxGalleryFinal.maxSize(count)
-                .imageLoader(ImageLoaderType.GLIDE)
+                .imageLoader(ImageLoaderType.UNIVERSAL)
                 .subscribe(new RxBusResultDisposable<ImageMultipleResultEvent>() {
                     @Override
                     protected void onEvent(ImageMultipleResultEvent imageMultipleResultEvent) throws Exception {
